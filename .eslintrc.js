@@ -1,0 +1,32 @@
+module.exports = {
+  env: {
+    browser: true,
+    es2021: true,
+  },
+  extends: [
+    'next/core-web-vitals',
+    'plugin:react/recommended',
+    'airbnb',
+  ],
+  globals: {
+    JSX: true,
+  },
+  parser: '@typescript-eslint/parser',
+  parserOptions: {
+    ecmaFeatures: {
+      jsx: true,
+      tsx: true,
+    },
+    ecmaVersion: 'latest',
+    sourceType: 'module',
+  },
+  plugins: [
+    'react',
+    '@typescript-eslint',
+  ],
+  rules: {
+    'react/jsx-filename-extension': [1, { extensions: ['.js', '.tsx'] }],
+    'react/jsx-props-no-spreading': 'off',
+    'react/function-component-definition': 'off',
+  },
+};
