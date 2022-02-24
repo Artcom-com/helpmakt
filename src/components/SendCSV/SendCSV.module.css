@@ -1,0 +1,19 @@
+.label-area {
+  background-color: #fff;
+  text-align: center;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 70px;
+  margin-top: 15px;
+  border-radius: 5px;
+  border: solid #000 2px;
+  cursor: pointer;
+  font-size: 24px;
+}
+
+.img {
+  margin: 5px;
+  display: flex;
+}
