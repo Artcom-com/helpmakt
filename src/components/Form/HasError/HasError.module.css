@@ -1,0 +1,9 @@
+.hasError {
+  width: 100%;
+  background-color: red;
+}
+
+.error {
+  color: #fff;
+  font-size: 18px;
+}

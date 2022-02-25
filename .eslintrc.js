@@ -5,6 +5,7 @@ module.exports = {
   },
   extends: [
     'next/core-web-vitals',
+    'plugin:@typescript-eslint/recommended',
     'plugin:react/recommended',
     'airbnb',
   ],
@@ -30,5 +31,7 @@ module.exports = {
     'react/function-component-definition': 'off',
     'import/extensions': 'off',
     'no-console': 'off',
+    '@typescript-eslint/no-unused-vars': ['error'],
+    'max-len': 'off',
   },
 };
