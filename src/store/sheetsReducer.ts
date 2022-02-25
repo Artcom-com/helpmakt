@@ -14,7 +14,7 @@ export interface SheetActions {
   csv?: File
   date: Date | undefined
   locationName: string
-  operation: string
+  operation: 'callHours' | 'callDuration' | 'default'
 }
 
 const sheetsReducer = (state: SheetsState, actions: SheetActions): SheetsState => {
@@ -29,6 +29,15 @@ const sheetsReducer = (state: SheetsState, actions: SheetActions): SheetsState =
         csv: actions.csv,
       };
     }
+
+    return {
+      sheetId: actions.sheetId,
+      tableName: actions.tableName,
+      date: actions.date as Date,
+      operation: actions.operation,
+      locationName: actions.locationName,
+      csv: actions.csv,
+    };
   }
 
   return {

@@ -1,3 +1,4 @@
+import { useRouter } from 'next/router';
 import React, { useState, ChangeEvent, useContext } from 'react';
 import SheetsContext from '../../store/SheetsContext';
 import { validationField } from '../../validations/validations';
@@ -20,6 +21,7 @@ const Form = (): JSX.Element => {
   const [operation, setOperation] = useState<OperationType>('default');
 
   const sheetsCtx = useContext(SheetsContext);
+  const { push } = useRouter();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>): Promise<void> => {
     e.preventDefault();
@@ -28,7 +30,7 @@ const Form = (): JSX.Element => {
       setErrorMessage('Necessário preencher todos os campos.');
     }
 
-    if (!date) {
+    if (date === undefined) {
       setHasError(true);
       setErrorMessage('Necessário preencher todos os campos.');
       return;
@@ -54,6 +56,8 @@ const Form = (): JSX.Element => {
       csv,
       locationName,
     });
+
+    push('/convert', '/convert');
   };
 
   const handleChangeOperation = (e: ChangeEvent<HTMLSelectElement>): void => {
@@ -77,12 +81,6 @@ const Form = (): JSX.Element => {
         setFunction={setTableName}
       />
       <Field
-        fieldId="location-name"
-        labelName="Location name"
-        placeholder="Nome da loja"
-        setFunction={setLocationname}
-      />
-      <Field
         fieldId="date-id"
         labelName="Data"
         type="date"
@@ -90,6 +88,14 @@ const Form = (): JSX.Element => {
         setFunction={setDate}
       />
       <Select handleChangeOperation={handleChangeOperation} />
+      {operation === 'callDuration' && (
+        <Field
+          fieldId="location-name"
+          labelName="Location name"
+          placeholder="Nome da loja"
+          setFunction={setLocationname}
+        />
+      )}
       {operation === 'callHours' && (
         <SendCSV
           setCSV={setCSV}

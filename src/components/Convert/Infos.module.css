@@ -1,0 +1,17 @@
+.infos {
+  width: 100%;
+  padding: 1em;
+}
+
+.p-infos {
+  font-size: 24px;
+}
+
+.textArea {
+  width: 400px;
+  height: 600px;
+}
+
+.text {
+  margin-right: 15px;
+}
