@@ -1,14 +1,16 @@
 import { GoogleSpreadsheet, GoogleSpreadsheetWorksheet, ServiceAccountCredentials } from 'google-spreadsheet';
 import { CallsDurations } from '../types/callsDurationSheet';
+import { CallsHours } from '../types/callsHours';
 import { OperationType } from '../types/operations';
 import callsDuration from './callDuration';
+import callsHours from './callsHours';
 import credentials from './credentials.json';
 
 export interface GSheetInfos {
   docId: string
   operation: OperationType
   tableName?: string
-  data?: CallsDurations
+  data?: CallsDurations | CallsHours
 }
 
 const setHeaderValues = (operation: OperationType): string[] => {
@@ -48,12 +50,12 @@ async function addInNewSheet({
 
     if (table.cellStats.nonEmpty === 0) {
       const headers = setHeaderValues(operation);
-
       await table.setHeaderRow(headers);
     }
 
     if (data) {
-      await callsDuration(data, table);
+      if (operation === 'callDuration') await callsDuration(data as CallsDurations, table);
+      if (operation === 'callHours') await callsHours(data as CallsHours, table);
     } else {
       return { message: 'É previso provisionar as informações.' };
     }

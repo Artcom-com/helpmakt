@@ -1,5 +1,6 @@
 import { useRouter } from 'next/router';
 import React, { useState, ChangeEvent, useContext } from 'react';
+import api from '../../services/api';
 import SheetsContext from '../../store/SheetsContext';
 import { validationField } from '../../validations/validations';
 import SendCSV from '../SendCSV/SendCSV';
@@ -13,8 +14,8 @@ export type OperationType = 'default' | 'callHours' | 'callDuration'
 const Form = (): JSX.Element => {
   const [sheetId, setSheetId] = useState<string>('');
   const [tableName, setTableName] = useState<string>('');
-  const [locationName, setLocationname] = useState<string>('');
-  const [csv, setCSV] = useState<File | undefined>(undefined);
+  const [locationName, setLocationName] = useState<string>('');
+  const [calls, setCalls] = useState<string[] | undefined>(undefined);
   const [date, setDate] = useState<Date | undefined>(undefined);
   const [hasError, setHasError] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string>('');
@@ -36,7 +37,7 @@ const Form = (): JSX.Element => {
       return;
     }
 
-    if (operation === 'callHours' && !csv) {
+    if (operation === 'callHours' && !calls) {
       setHasError(true);
       setErrorMessage('Necessário preencher todos os campos.');
       return;
@@ -53,11 +54,24 @@ const Form = (): JSX.Element => {
       tableName,
       operation,
       date,
-      csv,
+      calls,
       locationName,
     });
 
-    push('/convert', '/convert');
+    if (operation === 'callDuration') push('/convert', '/convert');
+    if (operation === 'callHours') {
+      await api.post('/table', {
+        docId: sheetId,
+        tableName,
+        data: {
+          month: date as unknown as string,
+          locationName,
+          calls,
+        },
+      });
+
+      push('/table', '/table');
+    }
   };
 
   const handleChangeOperation = (e: ChangeEvent<HTMLSelectElement>): void => {
@@ -93,12 +107,13 @@ const Form = (): JSX.Element => {
           fieldId="location-name"
           labelName="Location name"
           placeholder="Nome da loja"
-          setFunction={setLocationname}
+          setFunction={setLocationName}
         />
       )}
       {operation === 'callHours' && (
         <SendCSV
-          setCSV={setCSV}
+          setCalls={setCalls}
+          setLocationName={setLocationName}
           setErrorMessage={setErrorMessage}
           setHasError={setHasError}
         />

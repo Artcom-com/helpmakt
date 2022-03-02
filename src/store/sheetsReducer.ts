@@ -1,7 +1,7 @@
 export interface SheetsState {
   sheetId: string
   tableName: string
-  csv?: File
+  calls?: string[]
   date: Date | undefined
   locationName: string
   operation: 'callHours' | 'callDuration' | 'default'
@@ -11,7 +11,7 @@ export interface SheetActions {
   type: 'ADD_INFOS'
   sheetId: string
   tableName: string
-  csv?: File
+  calls?: string[]
   date: Date | undefined
   locationName: string
   operation: 'callHours' | 'callDuration' | 'default'
@@ -26,7 +26,7 @@ const sheetsReducer = (state: SheetsState, actions: SheetActions): SheetsState =
         date: actions.date as Date,
         operation: actions.operation,
         locationName: actions.locationName,
-        csv: actions.csv,
+        calls: actions.calls,
       };
     }
 
@@ -36,14 +36,14 @@ const sheetsReducer = (state: SheetsState, actions: SheetActions): SheetsState =
       date: actions.date as Date,
       operation: actions.operation,
       locationName: actions.locationName,
-      csv: actions.csv,
+      calls: actions.calls,
     };
   }
 
   return {
     sheetId: '',
     tableName: '',
-    csv: undefined,
+    calls: undefined,
     date: undefined,
     locationName: '',
     operation: 'default',

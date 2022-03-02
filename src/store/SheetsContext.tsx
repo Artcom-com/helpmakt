@@ -3,7 +3,7 @@ import { createContext } from 'react';
 export interface SheetsType {
   sheetId: string
   tableName: string
-  csv: File | undefined
+  calls: string[] | undefined
   date: Date | undefined
   operation: 'callHours' | 'callDuration' | 'default'
   locationName: string
@@ -16,7 +16,7 @@ export interface SheetsContextType extends SheetsType {
 export default createContext<SheetsContextType>({
   sheetId: '',
   tableName: '',
-  csv: undefined,
+  calls: undefined,
   date: undefined,
   operation: 'default',
   locationName: '',

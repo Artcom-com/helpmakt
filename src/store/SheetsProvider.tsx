@@ -11,7 +11,7 @@ export default function SheetsProvider({ children }: SheetsProviderProps): JSX.E
     sheetId: '',
     tableName: '',
     locationName: '',
-    csv: undefined,
+    calls: undefined,
     date: undefined,
     operation: 'default',
   });
@@ -23,7 +23,7 @@ export default function SheetsProvider({ children }: SheetsProviderProps): JSX.E
       tableName: infos.tableName,
       date: infos.date,
       operation: infos.operation,
-      csv: infos.csv,
+      calls: infos.calls,
       locationName: infos.locationName,
     });
   };
@@ -33,7 +33,7 @@ export default function SheetsProvider({ children }: SheetsProviderProps): JSX.E
     tableName: sheetsState.tableName,
     date: sheetsState.date,
     operation: sheetsState.operation,
-    csv: sheetsState.csv,
+    calls: sheetsState.calls,
     locationName: sheetsState.locationName,
     handleAddSheetInfos,
   }), [sheetsState]);
