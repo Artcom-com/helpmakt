@@ -16,6 +16,7 @@ import { CallsDurations } from '../../../types/callsDurationSheet';
 import SheetsContext from '../../../store/SheetsContext';
 import Message from '../../UI/Message';
 import Modal from '../../UI/Modal';
+import Loading from '../../UI/Loading/Loading';
 
 const ConvertForm = (): JSX.Element => {
   const [content, setContent] = useState<string>('');
@@ -24,6 +25,7 @@ const ConvertForm = (): JSX.Element => {
   const [callsDurations, setCallsDurations] = useState<CallsDurations | undefined>(undefined);
   const [modalContent, setModalContent] = useState<JSX.Element>(<Message message="Operação ocorreu com sucesso" />);
   const [handleModalInfo, setHandleModalInfo] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const { push } = useRouter();
   const sheetCtx = useContext(SheetsContext);
 
@@ -80,11 +82,13 @@ const ConvertForm = (): JSX.Element => {
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   const handleSendToGSheet = async (e: MouseEvent<HTMLButtonElement>): Promise<void> => {
     e.preventDefault();
+    setIsLoading(true);
     const result = await api.post('/durations', {
       calls: callsDurations,
       docId: sheetCtx.sheetId,
       tableName: sheetCtx.tableName,
     });
+    setIsLoading(false);
 
     if (result.data.error) {
       setModalContent(<Message error={result.data.error as string} />);
@@ -95,6 +99,7 @@ const ConvertForm = (): JSX.Element => {
 
   return (
     <>
+      {isLoading && <Modal><Loading /></Modal>}
       {handleModalInfo && <Modal>{modalContent}</Modal>}
       <form onSubmit={handleSubmit} className={classes['convert-form']}>
         <div className={classes.buttonGroup}>
