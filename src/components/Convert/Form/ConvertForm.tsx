@@ -1,21 +1,27 @@
 /* eslint-disable no-useless-concat */
 /* eslint-disable no-restricted-syntax */
+import React, { useContext, useState, MouseEvent } from 'react';
 import { useRouter } from 'next/router';
-import React, { useState } from 'react';
 import {
   average, countGreaterThan5minute, countLessThan1minute, countLessThan2minute, countLessThan3minute, countLessThan4minute, countLessThan5minute, countZero,
 } from '../../../conversions/calcs';
 import convert from '../../../conversions/convert';
+// import SheetsContext from '../../../store/SheetsContext';
 import TextArea from '../TextArea';
 import classes from './ConvertForm.module.css';
+import api from '../../../services/api';
+import { CallsDurations } from '../../../types/callsDurationSheet';
+import SheetsContext from '../../../store/SheetsContext';
 
 const ConvertForm = (): JSX.Element => {
   const [content, setContent] = useState<string>('');
   const [data, setData] = useState<string>('');
   const [formalData, setFormalData] = useState<string>('');
+  const [callsDurations, setCallsDurations] = useState<CallsDurations | undefined>(undefined);
   const { push } = useRouter();
+  const sheetCtx = useContext(SheetsContext);
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>): Promise<void> => {
     e.preventDefault();
     const arr: string[] = content.split('\n');
 
@@ -38,6 +44,20 @@ const ConvertForm = (): JSX.Element => {
       print += String(str);
     }
     setData(print);
+
+    const calls: CallsDurations = {
+      month: sheetCtx.date as Date,
+      locationName: sheetCtx.locationName,
+      average: resultAverage,
+      count1Min: numberOfLessThan1Minute,
+      count2Min: numberOfLessThan2Minute,
+      count3Min: numberOfLessThan3Minute,
+      count4Min: numberOfLessThan4Minute,
+      count5Min: numberOfLessThan5Minute,
+      countMoreMin: numberOfGreaterThan5Minute,
+    };
+
+    setCallsDurations(calls);
   };
 
   const handleBackPage = (): void => {
@@ -45,8 +65,15 @@ const ConvertForm = (): JSX.Element => {
   };
 
   // eslint-disable-next-line @typescript-eslint/no-empty-function
-  const handleSendToGSheet = (): void => {
+  const handleSendToGSheet = async (e: MouseEvent<HTMLButtonElement>): Promise<void> => {
+    e.preventDefault();
+    const result = await api.post('/durations', {
+      calls: callsDurations,
+      docId: sheetCtx.sheetId,
+      tableName: sheetCtx.tableName,
+    });
 
+    console.log(result.data);
   };
 
   return (
@@ -55,7 +82,7 @@ const ConvertForm = (): JSX.Element => {
       <div className={classes.buttonGroup}>
         <button type="button" onClick={handleBackPage} className={`${classes.btn} ${classes['btn-back']}`}>Voltar</button>
         <button type="submit" className={`${classes.btn} ${classes['btn-submit']}`}>Converter</button>
-        {data !== '' && <button onClick={handleSendToGSheet} type="submit" className={`${classes.btn} ${classes['btn-submit']}`}>Enviar</button>}
+        {data !== '' && <button onClick={handleSendToGSheet} type="button" className={`${classes.btn} ${classes['btn-submit']}`}>Enviar</button>}
       </div>
       <div className={classes['convert-text']}>
         <TextArea title="Entrada" setContent={setContent} value={content} />

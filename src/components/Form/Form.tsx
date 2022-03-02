@@ -25,7 +25,7 @@ const Form = (): JSX.Element => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>): Promise<void> => {
     e.preventDefault();
-    if (validationField(sheetId) || validationField(tableName) || validationField(locationName) || operation === 'default') {
+    if (validationField(sheetId) || validationField(locationName) || operation === 'default') {
       setHasError(true);
       setErrorMessage('Necessário preencher todos os campos.');
     }
