@@ -1,6 +1,8 @@
 /* eslint-disable no-useless-concat */
 /* eslint-disable no-restricted-syntax */
-import React, { useContext, useState, MouseEvent } from 'react';
+import React, {
+  useContext, useState, MouseEvent, useEffect,
+} from 'react';
 import { useRouter } from 'next/router';
 import {
   average, countGreaterThan5minute, countLessThan1minute, countLessThan2minute, countLessThan3minute, countLessThan4minute, countLessThan5minute, countZero,
@@ -12,14 +14,25 @@ import classes from './ConvertForm.module.css';
 import api from '../../../services/api';
 import { CallsDurations } from '../../../types/callsDurationSheet';
 import SheetsContext from '../../../store/SheetsContext';
+import Message from '../../UI/Message';
+import Modal from '../../UI/Modal';
 
 const ConvertForm = (): JSX.Element => {
   const [content, setContent] = useState<string>('');
   const [data, setData] = useState<string>('');
   const [formalData, setFormalData] = useState<string>('');
   const [callsDurations, setCallsDurations] = useState<CallsDurations | undefined>(undefined);
+  const [modalContent, setModalContent] = useState<JSX.Element>(<Message message="Operação ocorreu com sucesso" />);
+  const [handleModalInfo, setHandleModalInfo] = useState<boolean>(false);
   const { push } = useRouter();
   const sheetCtx = useContext(SheetsContext);
+
+  useEffect(() => {
+    const handleChangeModalView = () => {
+      setTimeout(() => setHandleModalInfo(false), 3000);
+    };
+    handleChangeModalView();
+  }, [handleModalInfo]);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>): Promise<void> => {
     e.preventDefault();
@@ -73,23 +86,29 @@ const ConvertForm = (): JSX.Element => {
       tableName: sheetCtx.tableName,
     });
 
-    console.log(result.data);
+    if (result.data.error) {
+      setModalContent(<Message error={result.data.error as string} />);
+    }
+
+    setHandleModalInfo(true);
   };
 
   return (
-
-    <form onSubmit={handleSubmit} className={classes['convert-form']}>
-      <div className={classes.buttonGroup}>
-        <button type="button" onClick={handleBackPage} className={`${classes.btn} ${classes['btn-back']}`}>Voltar</button>
-        <button type="submit" className={`${classes.btn} ${classes['btn-submit']}`}>Converter</button>
-        {data !== '' && <button onClick={handleSendToGSheet} type="button" className={`${classes.btn} ${classes['btn-submit']}`}>Enviar</button>}
-      </div>
-      <div className={classes['convert-text']}>
-        <TextArea title="Entrada" setContent={setContent} value={content} />
-        <TextArea title="Convertido em segundos" value={data} />
-        <TextArea title="Dados" value={formalData} />
-      </div>
-    </form>
+    <>
+      {handleModalInfo && <Modal>{modalContent}</Modal>}
+      <form onSubmit={handleSubmit} className={classes['convert-form']}>
+        <div className={classes.buttonGroup}>
+          <button type="button" onClick={handleBackPage} className={`${classes.btn} ${classes['btn-back']}`}>Voltar</button>
+          <button type="submit" className={`${classes.btn} ${classes['btn-submit']}`}>Converter</button>
+          {data !== '' && <button onClick={handleSendToGSheet} type="button" className={`${classes.btn} ${classes['btn-submit']}`}>Enviar</button>}
+        </div>
+        <div className={classes['convert-text']}>
+          <TextArea title="Entrada" setContent={setContent} value={content} />
+          <TextArea title="Convertido em segundos" value={data} />
+          <TextArea title="Dados" value={formalData} />
+        </div>
+      </form>
+    </>
   );
 };
 

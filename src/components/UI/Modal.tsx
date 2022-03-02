@@ -4,6 +4,7 @@ import classes from './Modal.module.css';
 
 export interface ModalProps {
   children: JSX.Element | JSX.Element[]
+  setOnClose?: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 const ModalOverlay = ({ children }: ModalProps): JSX.Element => (
