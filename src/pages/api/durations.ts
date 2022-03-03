@@ -9,9 +9,6 @@ export default async function handler(
 ) {
   const { calls, docId, tableName }: CallsDurationsRequest = req.body as CallsDurationsRequest;
 
-  console.log(req.body);
-  console.log(calls, docId);
-
   const response = await addInNewSheet({
     docId, operation: 'callDuration', data: calls, tableName,
   });

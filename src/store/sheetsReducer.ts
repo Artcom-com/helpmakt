@@ -1,7 +1,9 @@
+import { Calls } from '../types/callsHours';
+
 export interface SheetsState {
   sheetId: string
   tableName: string
-  calls?: string[]
+  calls?: Calls[]
   date: Date | undefined
   locationName: string
   operation: 'callHours' | 'callDuration' | 'default'
@@ -11,7 +13,7 @@ export interface SheetActions {
   type: 'ADD_INFOS'
   sheetId: string
   tableName: string
-  calls?: string[]
+  calls?: Calls[]
   date: Date | undefined
   locationName: string
   operation: 'callHours' | 'callDuration' | 'default'

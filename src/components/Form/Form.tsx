@@ -2,6 +2,7 @@ import { useRouter } from 'next/router';
 import React, { useState, ChangeEvent, useContext } from 'react';
 import api from '../../services/api';
 import SheetsContext from '../../store/SheetsContext';
+import { Calls } from '../../types/callsHours';
 import { validationField } from '../../validations/validations';
 import SendCSV from '../SendCSV/SendCSV';
 import Field from './Field/Field';
@@ -15,7 +16,7 @@ const Form = (): JSX.Element => {
   const [sheetId, setSheetId] = useState<string>('');
   const [tableName, setTableName] = useState<string>('');
   const [locationName, setLocationName] = useState<string>('');
-  const [calls, setCalls] = useState<string[] | undefined>(undefined);
+  const [calls, setCalls] = useState<Calls[]>([]);
   const [date, setDate] = useState<Date | undefined>(undefined);
   const [hasError, setHasError] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string>('');
@@ -23,6 +24,11 @@ const Form = (): JSX.Element => {
 
   const sheetsCtx = useContext(SheetsContext);
   const { push } = useRouter();
+
+  const handleSetCalls = (call: Calls): void => {
+    calls.push(call);
+    setCalls([...(calls as Calls[])]);
+  };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>): Promise<void> => {
     e.preventDefault();
@@ -69,8 +75,6 @@ const Form = (): JSX.Element => {
           calls,
         },
       });
-
-      push('/table', '/table');
     }
   };
 
@@ -112,8 +116,7 @@ const Form = (): JSX.Element => {
       )}
       {operation === 'callHours' && (
         <SendCSV
-          setCalls={setCalls}
-          setLocationName={setLocationName}
+          handleSetCalls={handleSetCalls}
           setErrorMessage={setErrorMessage}
           setHasError={setHasError}
         />

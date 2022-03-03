@@ -11,8 +11,6 @@ const Infos = (): JSX.Element => {
     operation = 'Horário de Ligação [Orgânico]';
   }
 
-  console.log(sheetsCtx.date);
-
   return (
     <div className={classes.infos}>
       <p className={classes['p-infos']}>{sheetsCtx.sheetId}</p>

@@ -1,9 +1,10 @@
 import { createContext } from 'react';
+import { Calls } from '../types/callsHours';
 
 export interface SheetsType {
   sheetId: string
   tableName: string
-  calls: string[] | undefined
+  calls: Calls[] | undefined
   date: Date | undefined
   operation: 'callHours' | 'callDuration' | 'default'
   locationName: string
