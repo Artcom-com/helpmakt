@@ -4,7 +4,6 @@ import { CallsHours } from '../types/callsHours';
 import { OperationType } from '../types/operations';
 import callsDuration from './callDuration';
 import callsHours from './callsHours';
-import credentials from './credentials.json';
 
 export interface GSheetInfos {
   docId: string
@@ -26,8 +25,8 @@ async function addInNewSheet({
 }: GSheetInfos): Promise<{[key: string]: string}> {
   try {
     const accessAccount: ServiceAccountCredentials = {
-      client_email: credentials.client_email,
-      private_key: credentials.private_key,
+      client_email: process.env.CLIENT_EMAIL as string,
+      private_key: Buffer.from(process.env.PRIVATE_KEY as string, 'base64').toString('ascii'),
     };
 
     const doc = new GoogleSpreadsheet(docId);

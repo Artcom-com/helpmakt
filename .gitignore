@@ -39,3 +39,5 @@ yarn-error.log*
 
 .vscode
 **/credentials.*
+.env
+base64.js
