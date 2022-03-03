@@ -19,7 +19,6 @@ export type OperationType = 'default' | 'callHours' | 'callDuration'
 const Form = (): JSX.Element => {
   const [sheetId, setSheetId] = useState<string>('');
   const [tableName, setTableName] = useState<string>('');
-  const [locationName, setLocationName] = useState<string>('');
   const [calls, setCalls] = useState<Calls[]>([]);
   const [date, setDate] = useState<Date | undefined>(undefined);
   const [hasError, setHasError] = useState<boolean>(false);
@@ -58,11 +57,6 @@ const Form = (): JSX.Element => {
       setErrorMessage('Necessário preencher todos os campos.');
     }
 
-    if (operation === 'callDuration' && validationField(locationName)) {
-      setHasError(true);
-      setErrorMessage('Necessário preencher todos os campos.');
-    }
-
     if (date === undefined) {
       setHasError(true);
       setErrorMessage('Necessário preencher todos os campos.');
@@ -87,7 +81,6 @@ const Form = (): JSX.Element => {
       operation,
       date,
       calls,
-      locationName,
     });
 
     if (operation === 'callDuration') push('/convert', '/convert');
@@ -98,7 +91,6 @@ const Form = (): JSX.Element => {
         tableName,
         data: {
           month: date as unknown as string,
-          locationName,
           calls,
         },
       });
@@ -146,14 +138,6 @@ const Form = (): JSX.Element => {
           setFunction={setDate}
         />
         <Select handleChangeOperation={handleChangeOperation} />
-        {operation === 'callDuration' && (
-          <Field
-            fieldId="location-name"
-            labelName="Location name"
-            placeholder="Nome da loja"
-            setFunction={setLocationName}
-          />
-        )}
         {operation === 'callHours' && (
           <SendCSV
             handleSetCalls={handleSetCalls}

@@ -5,7 +5,6 @@ export interface SheetsState {
   tableName: string
   calls?: Calls[]
   date: Date | undefined
-  locationName: string
   operation: 'callHours' | 'callDuration' | 'default'
 }
 
@@ -15,7 +14,6 @@ export interface SheetActions {
   tableName: string
   calls?: Calls[]
   date: Date | undefined
-  locationName: string
   operation: 'callHours' | 'callDuration' | 'default'
 }
 
@@ -27,7 +25,6 @@ const sheetsReducer = (state: SheetsState, actions: SheetActions): SheetsState =
         tableName: actions.tableName,
         date: actions.date as Date,
         operation: actions.operation,
-        locationName: actions.locationName,
         calls: actions.calls,
       };
     }
@@ -37,7 +34,6 @@ const sheetsReducer = (state: SheetsState, actions: SheetActions): SheetsState =
       tableName: actions.tableName,
       date: actions.date as Date,
       operation: actions.operation,
-      locationName: actions.locationName,
       calls: actions.calls,
     };
   }
@@ -47,7 +43,6 @@ const sheetsReducer = (state: SheetsState, actions: SheetActions): SheetsState =
     tableName: '',
     calls: undefined,
     date: undefined,
-    locationName: '',
     operation: 'default',
   };
 };

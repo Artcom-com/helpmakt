@@ -7,7 +7,6 @@ export interface SheetsType {
   calls: Calls[] | undefined
   date: Date | undefined
   operation: 'callHours' | 'callDuration' | 'default'
-  locationName: string
 }
 
 export interface SheetsContextType extends SheetsType {
@@ -20,6 +19,5 @@ export default createContext<SheetsContextType>({
   calls: undefined,
   date: undefined,
   operation: 'default',
-  locationName: '',
   handleAddSheetInfos: (infos: SheetsType) => console.log(infos),
 });

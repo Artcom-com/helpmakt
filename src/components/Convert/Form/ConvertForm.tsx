@@ -17,15 +17,18 @@ import SheetsContext from '../../../store/SheetsContext';
 import Message from '../../UI/Message';
 import Modal from '../../UI/Modal';
 import Loading from '../../UI/Loading/Loading';
+import Field from '../../Form/Field/Field';
 
 const ConvertForm = (): JSX.Element => {
   const [content, setContent] = useState<string>('');
   const [data, setData] = useState<string>('');
   const [formalData, setFormalData] = useState<string>('');
+  const [locationName, setLocationName] = useState<string>('');
   const [callsDurations, setCallsDurations] = useState<CallsDurations | undefined>(undefined);
   const [modalContent, setModalContent] = useState<JSX.Element>(<Message message="Operação ocorreu com sucesso" />);
   const [handleModalInfo, setHandleModalInfo] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+
   const { push } = useRouter();
   const sheetCtx = useContext(SheetsContext);
 
@@ -62,7 +65,7 @@ const ConvertForm = (): JSX.Element => {
 
     const calls: CallsDurations = {
       month: sheetCtx.date as Date,
-      locationName: sheetCtx.locationName,
+      locationName,
       average: resultAverage,
       count1Min: numberOfLessThan1Minute,
       count2Min: numberOfLessThan2Minute,
@@ -83,6 +86,11 @@ const ConvertForm = (): JSX.Element => {
   const handleSendToGSheet = async (e: MouseEvent<HTMLButtonElement>): Promise<void> => {
     e.preventDefault();
     setIsLoading(true);
+
+    if (locationName === '') {
+      setModalContent(<Message error="Locatation name é necessário." />);
+    }
+
     const result = await api.post('/durations', {
       calls: callsDurations,
       docId: sheetCtx.sheetId,
@@ -95,6 +103,10 @@ const ConvertForm = (): JSX.Element => {
     }
 
     setHandleModalInfo(true);
+
+    setContent('');
+    setFormalData('');
+    setData('');
   };
 
   return (
@@ -102,6 +114,14 @@ const ConvertForm = (): JSX.Element => {
       {isLoading && <Modal><Loading /></Modal>}
       {handleModalInfo && <Modal>{modalContent}</Modal>}
       <form onSubmit={handleSubmit} className={classes['convert-form']}>
+        <div style={{ width: '80%', marginBottom: '15px', marginLeft: '15px' }}>
+          <Field
+            fieldId="location-name"
+            labelName="Location Name"
+            placeholder=""
+            setFunction={setLocationName}
+          />
+        </div>
         <div className={classes.buttonGroup}>
           <button type="button" onClick={handleBackPage} className={`${classes.btn} ${classes['btn-back']}`}>Voltar</button>
           <button type="submit" className={`${classes.btn} ${classes['btn-submit']}`}>Converter</button>
