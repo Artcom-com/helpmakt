@@ -80,7 +80,6 @@ const Form = (): JSX.Element => {
       tableName,
       operation,
       date,
-      calls,
     });
 
     if (operation === 'callDuration') push('/convert', '/convert');

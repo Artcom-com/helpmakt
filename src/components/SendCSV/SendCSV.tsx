@@ -37,8 +37,6 @@ const SendCSV = ({
           locationName: (locationName as string),
           calls: (resultCalls as string[]),
         });
-
-        e.target.files = null;
       }
     }
   };

@@ -10,7 +10,6 @@ export default function SheetsProvider({ children }: SheetsProviderProps): JSX.E
   const [sheetsState, dispatchSheetsAction] = useReducer(sheetsReducer, {
     sheetId: '',
     tableName: '',
-    calls: undefined,
     date: undefined,
     operation: 'default',
   });
@@ -22,7 +21,6 @@ export default function SheetsProvider({ children }: SheetsProviderProps): JSX.E
       tableName: infos.tableName,
       date: infos.date,
       operation: infos.operation,
-      calls: infos.calls,
     });
   };
 
@@ -31,7 +29,6 @@ export default function SheetsProvider({ children }: SheetsProviderProps): JSX.E
     tableName: sheetsState.tableName,
     date: sheetsState.date,
     operation: sheetsState.operation,
-    calls: sheetsState.calls,
     handleAddSheetInfos,
   }), [sheetsState]);
 

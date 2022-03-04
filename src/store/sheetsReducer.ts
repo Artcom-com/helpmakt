@@ -1,9 +1,6 @@
-import { Calls } from '../types/callsHours';
-
 export interface SheetsState {
   sheetId: string
   tableName: string
-  calls?: Calls[]
   date: Date | undefined
   operation: 'callHours' | 'callDuration' | 'default'
 }
@@ -12,7 +9,6 @@ export interface SheetActions {
   type: 'ADD_INFOS'
   sheetId: string
   tableName: string
-  calls?: Calls[]
   date: Date | undefined
   operation: 'callHours' | 'callDuration' | 'default'
 }
@@ -25,7 +21,6 @@ const sheetsReducer = (state: SheetsState, actions: SheetActions): SheetsState =
         tableName: actions.tableName,
         date: actions.date as Date,
         operation: actions.operation,
-        calls: actions.calls,
       };
     }
 
@@ -34,14 +29,12 @@ const sheetsReducer = (state: SheetsState, actions: SheetActions): SheetsState =
       tableName: actions.tableName,
       date: actions.date as Date,
       operation: actions.operation,
-      calls: actions.calls,
     };
   }
 
   return {
     sheetId: '',
     tableName: '',
-    calls: undefined,
     date: undefined,
     operation: 'default',
   };
