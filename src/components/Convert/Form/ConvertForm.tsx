@@ -67,6 +67,7 @@ const ConvertForm = (): JSX.Element => {
       month: sheetCtx.date as Date,
       locationName,
       average: resultAverage,
+      countZeros: numberOfZero,
       count1Min: numberOfLessThan1Minute,
       count2Min: numberOfLessThan2Minute,
       count3Min: numberOfLessThan3Minute,

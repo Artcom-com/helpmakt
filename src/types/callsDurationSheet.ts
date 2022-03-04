@@ -2,6 +2,7 @@ export interface CallsDurations {
   month: Date
   locationName: string
   average: string
+  countZeros: number
   count1Min: number
   count2Min: number
   count3Min: number

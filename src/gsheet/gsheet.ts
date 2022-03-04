@@ -14,7 +14,7 @@ export interface GSheetInfos {
 
 const setHeaderValues = (operation: OperationType): string[] => {
   if (operation === 'callDuration') {
-    return ['Month', 'Location Name', 'Duração Média', '0-1 min', '1-2 min', '2-3 min', '3-4 min', '4-5 min', '5+ min'];
+    return ['Month', 'Location Name', 'Duração Média', '0 seg', '0-1 min', '1-2 min', '2-3 min', '3-4 min', '4-5 min', '5+ min'];
   }
 
   return ['Month', 'Location Name', '8h', '9h', '10h', '11h', '12h', '13h', '14h', '15h', '16h', '17h'];

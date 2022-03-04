@@ -6,6 +6,7 @@ export default async function callsDuration(data: CallsDurations, sheet: GoogleS
     Month: `${data.month}`,
     'Location Name': data.locationName,
     'Duração Média': data.average,
+    '0 seg': data.countZeros,
     '0-1 min': data.count1Min,
     '1-2 min': data.count2Min,
     '2-3 min': data.count3Min,
