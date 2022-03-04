@@ -24,6 +24,7 @@ const ConvertForm = (): JSX.Element => {
   const [data, setData] = useState<string>('');
   const [formalData, setFormalData] = useState<string>('');
   const [locationName, setLocationName] = useState<string>('');
+  const [date, setDate] = useState<Date | undefined>(undefined);
   const [callsDurations, setCallsDurations] = useState<CallsDurations | undefined>(undefined);
   const [modalContent, setModalContent] = useState<JSX.Element>(<Message message="Operação ocorreu com sucesso" />);
   const [handleModalInfo, setHandleModalInfo] = useState<boolean>(false);
@@ -64,7 +65,7 @@ const ConvertForm = (): JSX.Element => {
     setData(print);
 
     const calls: CallsDurations = {
-      month: sheetCtx.date as Date,
+      month: date as Date,
       locationName,
       average: resultAverage,
       countZeros: numberOfZero,
@@ -116,6 +117,13 @@ const ConvertForm = (): JSX.Element => {
       {handleModalInfo && <Modal>{modalContent}</Modal>}
       <form onSubmit={handleSubmit} className={classes['convert-form']}>
         <div style={{ width: '80%', marginBottom: '15px', marginLeft: '15px' }}>
+          <Field
+            fieldId="date-id"
+            labelName="Data"
+            type="date"
+            placeholder=""
+            setFunction={setDate}
+          />
           <Field
             fieldId="location-name"
             labelName="Location Name"

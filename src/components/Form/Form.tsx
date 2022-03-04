@@ -57,7 +57,7 @@ const Form = (): JSX.Element => {
       setErrorMessage('Necessário preencher todos os campos.');
     }
 
-    if (date === undefined) {
+    if (operation === 'callHours' && date === undefined) {
       setHasError(true);
       setErrorMessage('Necessário preencher todos os campos.');
       return;
@@ -130,6 +130,8 @@ const Form = (): JSX.Element => {
           placeholder="Google ADS - Campanha EX"
           setFunction={setTableName}
         />
+        <Select handleChangeOperation={handleChangeOperation} />
+        {operation === 'callHours' && (
         <Field
           fieldId="date-id"
           labelName="Data"
@@ -137,7 +139,7 @@ const Form = (): JSX.Element => {
           placeholder=""
           setFunction={setDate}
         />
-        <Select handleChangeOperation={handleChangeOperation} />
+        )}
         {operation === 'callHours' && (
           <SendCSV
             handleSetCalls={handleSetCalls}

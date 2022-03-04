@@ -16,9 +16,6 @@ const Infos = (): JSX.Element => {
       <p className={classes['p-infos']}>{sheetsCtx.sheetId}</p>
       <p className={classes['p-infos']}>{sheetsCtx.tableName}</p>
       <p className={classes['p-infos']}>{operation}</p>
-      <p className={classes['p-infos']}>
-        {sheetsCtx.date}
-      </p>
     </div>
   );
 };
