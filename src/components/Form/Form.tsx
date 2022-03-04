@@ -93,6 +93,7 @@ const Form = (): JSX.Element => {
           calls,
         },
       });
+      setCalls([]);
       setIsLoading(false);
 
       if (response.data.error) {
